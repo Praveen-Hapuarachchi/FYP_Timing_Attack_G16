@@ -1,0 +1,308 @@
+\section{Literature Review}
+
+\subsection{Related Work}
+
+\subsubsection{Timing Attacks in SDN and SDVN}
+
+The Software-Defined Networking (SDN) brings about a control plane that is logically centralized and susceptible to timing-based attacks. According to Xu et al.~\cite{Xu2015Race}, a great vulnerability associated with race conditions in SDN controllers is the ability to invoke asynchronous conditions, causing crashes in controllers or unreliable network states. In the same vein, Cao et al.~\cite{Cao2018CrossPath} introduced the CrossPath attack, that takes advantage of shared data-plane connections to add controlled delays to control-plane messages, and thus have a substantial impact on controller-switch communication.
+
+The timing side channel attacks are also investigated as a form of information leakage. Shoaib et al.~\cite{Shoaib2021Timing} demonstrated that the attackers can deduce the entries in flow-table and network policy based on the control-plane response times. Arif et al.~\cite{Arif2019Timing} pointed out the importance of malicious vehicles in vehicular networks in that they can deliberately slow down safety messages, leading to violation of deadlines and compromising road safety. These papers verify that timing attacks are a critical risk to SDN and SDVN environments, but do not offer much adaptive mitigation measures.
+
+\subsubsection{Machine Learning and DRL-Based Defenses}
+
+The intrusion detection in SDN has received a lot of attention in machine-learning methods. To recognize timing probes in SDN using traffic-latency features, Shoaib et al.~\cite{Shoaib2023Detection} suggested a machine-learning model. Nonetheless, fixed ML models are not able to accommodate changing attack patterns.
+
+In order to overcome this drawback, deep reinforcement learning (DRL) has been used in adaptive intrusion detection. Kanimozhi and Ramesh~\cite{Kanimozhi2022DRL} came up with a DRL-based IDS that can learn the optimal mitigation policies to SDN attacks dynamically. Despite the advantages offered by DRL in terms of adaptability, the available solutions are all oriented towards volumetric attacks including DDoS, and do not specifically describe control-plane timing manipulation or vehicle network dynamics.
+
+\begin{comment}
+...
+\end{comment}
+
+\subsubsection{Blockchain-Based Control-Plane Attack Detection in SDN}
+\label{sec:lit_bc_cp}
+Alkhamisi et al.~\cite{alkhamisi2024bcs} proposed the Blockchain-based
+Controller Security (BCS) framework for multi-controller SDN, employing a
+digit-coin reputation mechanism and a reputed Practical Byzantine Fault
+Tolerance (rPBFT) consensus to detect false data injection and control-plane
+integrity violations, achieving 100\% detection of flow-rule injections.
+However, BCS addresses static multi-domain SDN and does not model
+timing-manipulation attacks; its consensus latency is incompatible with
+the sub-millisecond timing windows of SDVN control loops.
+
+Jiang et al.~\cite{jiang2022bsdguard} introduced BSD-Guard, a collaborative
+blockchain-based defence placing a secured middleware plane between the control
+and data planes, enabling cooperative detection and smart-contract-enforced
+blacklisting across SDN domains. While effective for volumetric DDoS,
+BSD-Guard does not model control-plane timing semantics and cannot distinguish
+congestion-induced delays from adversarial timing injection.
+
+\begin{comment}
+...
+\end{comment}
+\begin{comment}
+@article{alkhamisi2024bcs,
+  author  = {Alkhamisi, Abdulelah and Katib, Iyad and Buhari, Seyed M.},
+  title   = {Blockchain-Based Control Plane Attack Detection Mechanisms
+             for Multi-Controller Software-Defined Networks},
+  journal = {Electronics},
+  volume  = {13},
+  number  = {12},
+  pages   = {2279},
+  year    = {2024},
+  doi     = {10.3390/electronics13122279}
+}
+
+@article{rahman2025quantum,
+  author  = {Rahman, Ziaur and others},
+  title   = {Quantum Resistant Blockchain and Deep Learning Revolutionize
+             Secure Communications for Autonomous Vehicles},
+  journal = {Scientific Reports},
+  volume  = {15},
+  year    = {2025},
+  doi     = {10.1038/s41598-025-28938-y}
+}
+
+@article{cao2025quantum,
+  author  = {Cao, Bo and Wang, Xin and Zhang, Lei},
+  title   = {Quantum-Resilient Blockchain-Enabled Secure Communication
+             Framework for Connected Autonomous Vehicles Using
+             Post-Quantum Cryptography},
+  journal = {Vehicular Communications},
+  year    = {2025},
+  doi     = {10.1016/j.vehcom.2025.100225}
+}
+
+@article{llmguardian2026,
+  author  = {Boukela, Lynda and others},
+  title   = {Towards {LLM}-Driven Cybersecurity in Autonomous Vehicles:
+             A Big Data-Empowered Framework with Emerging Technologies},
+  journal = {Machine Learning and Knowledge Extraction},
+  volume  = {8},
+  number  = {2},
+  pages   = {43},
+  year    = {2026},
+  doi     = {10.3390/make8020043}
+}
+
+@article{satpathy2025cloud,
+  author  = {Satpathy, Sudhashis and Tripathy, Umakanta and Swain, Pradyumna K.},
+  title   = {Cloud-Based {DDoS} Detection Using Hybrid Feature Selection
+             with Deep Reinforcement Learning ({DRL})},
+  journal = {Scientific Reports},
+  volume  = {15},
+  pages   = {36546},
+  year    = {2025},
+  doi     = {10.1038/s41598-025-18857-3}
+}
+
+@article{jiang2022bsdguard,
+  author  = {Jiang, Wei and Li, Ming and Xu, Shengwei and Zeng, Qiangsheng},
+  title   = {{BSD-Guard}: A Collaborative Blockchain-Based Approach for
+             Detection and Mitigation of {SDN}-Targeted {DDoS} Attacks},
+  journal = {Security and Communication Networks},
+  volume  = {2022},
+  pages   = {1608689},
+  year    = {2022},
+  doi     = {10.1155/2022/1608689}
+}
+\end{comment}
+
+
+\subsubsection{Deep Reinforcement Learning for Adaptive Intrusion Detection}
+\label{sec:lit_drl_ids}
+Satpathy et al.~\cite{satpathy2025cloud} proposed a DRL-based framework for
+real-time DDoS detection in cloud environments, evaluating Twin Delayed Deep
+Deterministic Policy Gradient (TD3), DDPG, and Advantage Actor-Critic (A2C)
+algorithms with a hybrid Boruta--SHAP feature selection pipeline. TD3 achieved
+99.12\% accuracy and 1.87\,ms inference latency on CICDDoS2019, demonstrating
+the viability of actor-critic DRL for real-time security decisions. Despite
+superior detection performance, the framework targets volumetric cloud attacks
+and does not model control-plane timing semantics, MDP state formulation for
+timing features, or vehicular mobility context.
+
+\subsubsection{Post-Quantum Cryptography and Blockchain for Vehicular Security}
+\label{sec:lit_pqc_v2x}
+Rahman et al.~\cite{rahman2025quantum} integrated lattice-based post-quantum
+cryptography (CRYSTALS-Kyber, zk-SNARKs) with Hyperledger Fabric blockchain
+to secure V2X communications against both classical and quantum adversaries,
+achieving 99.9\% data integrity and 150 transactions per second. The work,
+however, focuses on data-sharing authentication and does not address
+control-plane timing integrity or adaptive timing anomaly detection.
+
+Cao et al.~\cite{cao2025quantum} combined CRYSTALS-Kyber KEM with an Adaptive
+Grouping Score-based PBFT (AGS-PBFT) blockchain to protect CAV communications
+from quantum threats, reducing consensus latency and increasing throughput.
+The framework does not address SDN control-plane timing attacks, real-time
+anomaly detection, or the design of dual-mode deployments for resource-
+constrained vehicular environments.
+
+\subsubsection{Large Language Models for Cybersecurity in Vehicular Networks}
+\label{sec:lit_llm_cyber}
+The LLM-Guardian framework~\cite{llmguardian2026} integrates Large Language
+Models with Graph Neural Networks, Optimal Transport drift analysis, adaptive
+CUSUM sequential testing, and conformal prediction for distribution-free
+confidence calibration in autonomous vehicle cybersecurity, achieving sub-100\,ms
+detection latency. While demonstrating the power of LLM-based detection for
+in-vehicle CAN bus and V2X interfaces, LLM-Guardian does not address SDN
+control-plane timing attacks, SDVN mobility-amplified vulnerabilities, or
+post-quantum cryptographic mitigation.
+
+
+
+\subsubsection{Blockchain-Based Security in SDN and Vehicular Networks}
+
+The blockchain technology has been suggested in order to improve trust, transparency, and resiliency in SDN and vehicular networks. Mozumder et al.~\cite{Mozumder2020Blockchain} combined Hyperledger Fabric with SDN, which stored intrusion-detection logs safely, making them immutable and tamper-resistant. Derhab et al.~\cite{Derhab2021BMC} proposed a multi-controller architecture in blockchain based SDN to avoid malicious injections of flow-rules.
+
+Secure data sharing and trust management in vehicular networks have been applied with the help of blockchain. But these methods primarily concentrate on authentication, access control or log integrity and do not take into account timing synchronization or control-plane delay attacks. Therefore, the timeline of the use of blockchain to protect against timing attacks is not fully investigated.
+
+\subsubsection{Large Language Models in Cybersecurity}
+
+Big Data models have recently become effective instruments of cybersecurity analysis in the form of Large Language Models (LLMs). As Zhang et al.~\cite{Zhang2024LLM} were able to show, LLMs are capable of analyzing security logs, detecting anomalies and generating human readable explanations to cyber incidents. Although successful in overall cybersecurity areas, SDN, and SDVN control-plane security, LLMs are yet to be implemented.
+
+\subsection{Comparative Analysis of Related Works}
+Table~\ref{tab:gap} compares closely related attack-focused studies with the proposed approach. The comparison highlights key limitations in existing works and motivates the need for an integrated, adaptive defense framework for control-plane timing attacks in SDVN.
+
+\begin{comment}
+...
+\end{comment}
+\begin{comment}
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Related Attack-Focused Works with the Proposed Approach}
+\label{tab:related_work_comparison}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Work} &
+\textbf{Timing} &
+\textbf{SDVN} &
+\textbf{V2V} &
+\textbf{Decentralized} &
+\textbf{Adaptive} &
+\textbf{Explainable} &
+\textbf{Real-Time} \\
+&
+\textbf{Attack} &
+\textbf{Context} &
+\textbf{Considered} &
+\textbf{Verification} &
+\textbf{Defense} &
+\textbf{Analysis} &
+\textbf{Mitigation} \\
+\midrule
+Xu et al.~\cite{Xu2015Race} 
+& \checkmark & \checkmark & -- & -- & -- & -- & \checkmark \\
+
+Cao et al.~\cite{Cao2018CrossPath} 
+& \checkmark & -- & -- & -- & \checkmark & -- & \checkmark \\
+
+Shoaib et al.~\cite{Shoaib2021Timing} 
+& -- & \checkmark & -- & \checkmark & -- & -- & -- \\
+
+Kanimozhi and Ramesh~\cite{Kanimozhi2022DRL} 
+& \checkmark & \checkmark & -- & -- & \checkmark & -- & -- \\
+
+\midrule
+\textbf{Proposed Work} 
+& \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{tabular}}
+\end{table}
+\end{comment}
+
+\begin{table*}[!t]
+\renewcommand{\arraystretch}{1.1}
+\caption{Comparative Gap Analysis of Related Works}
+\label{tab:gap}
+\centering
+\tiny
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llccccccc}
+\hline
+\textbf{Work} & \textbf{Technique} &
+\textbf{SDVN/} & \textbf{Timing-} & \textbf{PQC} &
+\textbf{Dual-} & \textbf{Real-Time} & \textbf{Mitigation} &
+\textbf{Key Limitation} \\
+& & \textbf{Mob.} & \textbf{Specific} & &
+\textbf{Mode} & \textbf{Detect.} & \textbf{Enforced} & \\
+\hline
+Shoaib \& Khan~\cite{Shoaib2023Detection}    & ML (SVM)       & N & Y & N & N & N & N & Static, no adaptation    \\
+Shoaib et al.~\cite{Shoaib2021Timing}    & ML             & Y & Y & N & N & N & N & No mitigation            \\
+Arif \& Wang~\cite{Arif2019Timing}     & Analysis       & Y & Y & N & N & N & N & No detection mechanism   \\
+Xu et al.~\cite{Xu2015Race}         & Analysis       & Y & Y & N & N & Y & N & No defence proposed      \\
+Cao et al.~\cite{Cao2018CrossPath}       & Measurement    & N & Y & N & N & Y & N & SDN only, no mitigation  \\
+Kanimozhi\&Ramesh~\cite{Kanimozhi2022DRL}& DRL            & Y & N & N & N & Y & Y & Not timing-specific       \\
+Mozumder\&Islam~\cite{Mozumder2020Blockchain}   & Blockchain     & N & N & N & N & N & Y & No timing semantics       \\
+Derhab\&Guerroumi~\cite{Derhab2021BMC}& Blockchain     & N & N & N & N & Y & Y & Static SDN, no mobility  \\
+Alkhamisi et al.~\cite{alkhamisi2024bcs} & BC+rPBFT & N & N & N & N & Y & Y & No timing/SDVN context \\
+Satpathy et al.~\cite{satpathy2025cloud} & DRL (TD3)& N & N & N & Y & Y & N & No timing semantics \\
+Rahman et al.~\cite{rahman2025quantum}   & PQC+BC   & Y & N & Y & N & N & N & No timing attack focus  \\
+LLM-Guardian~\cite{llmguardian2026}      & LLM+GNN  & Y & N & N & N & Y & N & No SDN/timing context   \\
+\hline
+\textbf{Proposed} & \textbf{DRL+BC+PQC+LLM} &
+\textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} & \textbf{Y} & -- \\
+\hline
+\end{tabular}
+\end{table*}
+
+
+As illustrated in Table~\ref{tab:gap}, the current research is mainly dealing with control-plane security involving isolated methods including centralized detection or static rule-based mitigation. The majority of the works fail to take into account vehicle-to-vehicle (V2V) interactions, are not decentralized, and are not highly adaptable to changing timing-attack strategies. Contrary, the suggested solution next-generationally negates the aforementioned constraints by systematically applying decentralized timing verification, adaptive defense, and explainable analysis with a combined SDVN framework.
+
+\subsubsection{Research Gap}
+\begin{comment}
+To conclude, timing attacks of SDN and SDVN, SDN and SDVN adaptive defenses based on DRL, and blockchain-based security frameworks have been studied independently in the past. Nonetheless, there is no published literature that incorporates blockchain to create verifiable timing logs, DRL to create adaptive control-plane defenses, and LLMs to create intelligent threat interpretation as a part of an integrated SDVN security architecture. This study will fill this gap by presenting a new type of multi-layered defense mechanism that is specifically developed to combat timing attacks in Software-Defined Vehicular Network.
+\end{comment}
+
+Analysis of Table~\ref{tab:gap} reveals five specific gaps that motivate
+this work:
+
+\begin{enumerate}
+\item \textbf{Absence of mobility-aware timing-attack modelling.}
+  Existing timing-attack analyses~\cite{Xu2015Race,Cao2018CrossPath,Shoaib2021Timing,Arif2019Timing} do not quantify how
+  vehicular mobility amplifies each attack variant. Consequently, all
+  existing detection thresholds are mobility-agnostic and systematically
+  fail during high-speed or high-density vehicular conditions.
+
+\item \textbf{No dual-mode defence architecture.}
+  All reviewed defences operate in a single mode: either computationally
+  expensive full frameworks~\cite{Kanimozhi2022DRL,alkhamisi2024bcs,satpathy2025cloud} or
+  computationally cheap but weak techniques~\cite{Shoaib2023Detection,Shoaib2021Timing}. None provides
+  resource-aware switching between a lightweight rule-based mode and a
+  full AI/blockchain/PQC mode, a prerequisite for practical SDVN deployment.
+
+\item \textbf{Absence of post-quantum cryptographic enforcement.}
+  No existing SDVN timing-attack defence incorporates NIST-standardised
+  PQC primitives despite the demonstrated quantum vulnerability of
+  ECDSA-based control-plane authentication~\cite{rahman2025quantum,cao2025quantum}. Vehicular networks have
+  multi-decade deployment horizons that overlap with expected quantum
+  computing timelines.
+
+\item \textbf{No separation of detection from mitigation.}
+  Existing frameworks either address only detection~\cite{Shoaib2023Detection,Shoaib2021Timing,Arif2019Timing} or
+  conflate detection and mitigation without formally distinguishing their
+  latency requirements and security properties~\cite{Mozumder2020Blockchain,Derhab2021BMC}. For timing
+  attacks, these roles require distinct mechanisms.
+
+\item \textbf{No integrated framework for all four timing attack variants
+  in SDVN.} While individual components --- DRL~\cite{Kanimozhi2022DRL}, blockchain~\cite{Mozumder2020Blockchain},
+  LLM~\cite{llmguardian2026} --- have been studied in isolation, no prior
+  work unifies them with PQC into a single mobility-aware framework
+  targeting delay injection, race conditions, side-channel leakage, and
+  synchronisation exploits simultaneously.
+
+ \item \textbf{Confirmed attacks have no tamper-proof,
+enforceable response path.}
+Detection-only works~\cite{Shoaib2023Detection,Shoaib2021Timing,Arif2019Timing} raise alerts but
+provide no mechanism to enforce a network-level response.
+Blockchain-based works~\cite{Mozumder2020Blockchain,Derhab2021BMC,alkhamisi2024bcs}
+store event records but do not demonstrate that stored
+evidence is acted upon by an automated, tamper-proof
+enforcement mechanism within a latency compatible with
+vehicular safety requirements. The consequence is that
+even correctly detected timing attacks can continue
+until a human operator intervenes --- an unacceptable
+delay in collision avoidance and intersection
+coordination scenarios where attack persistence beyond
+100\,ms causes measurable safety degradation~\cite{Arif2019Timing}.
+
+\end{enumerate}

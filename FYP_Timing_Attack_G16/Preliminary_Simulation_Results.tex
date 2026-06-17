@@ -1,0 +1,599 @@
+\section{Preliminary Simulation Results}
+\label{sec:prelim}
+
+This chapter presents the simulation environment configured
+for evaluating the DMAP-SDVN framework, the implementation
+status of the two completed tasks, and evidence from
+preliminary simulation runs conducted to validate the
+attack injection and metric collection infrastructure
+prior to the implementation of the full signature
+detection layer in Task~03.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Simulation Environment and Configuration}
+
+% ─────────────────────────────────────────────────────────
+
+The evaluation environment is built on NS3 version~3.35
+with the OFSwitch13 module providing OpenFlow~1.3
+control-plane support. The simulation models an SDVN
+topology with a logically centralised SDN controller,
+multiple RSU nodes, and mobile vehicular nodes
+communicating over CSMA downlink and LTE uplink
+channels, reflecting the V2I and V2V communication
+paths described in Section~\ref{sec:system_model}.
+
+Table~\ref{tab:sim_params} summarises the primary
+simulation parameters used in the current runs. The
+\texttt{attack\_percentage} parameter controls the
+fraction of total network nodes designated as
+attackers; the current preliminary runs use 40\%
+attack intensity, yielding seven attacking nodes.
+
+\begin{table}[htb]
+\centering
+\caption{Simulation Parameters (Current Implementation)}
+\label{tab:sim_params}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{ll}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+NS3 version                      & 3.35 \\
+Control-plane protocol           & OpenFlow~1.3 (OFSwitch13) \\
+Channel types                    & CSMA (downlink), LTE (uplink) \\
+Simulation duration              & 10\,s per run \\
+Metrics epoch interval           & 1\,s (periodic CSV flush) \\
+Attack variants implemented      & DI, RC, SC, SE \\
+Attack intensity (current runs)  & 40\% of total nodes \\
+Number of attacking nodes        & 7 \\
+DI injected delays               & 50\,ms ($t{=}1$\,s), 80\,ms ($t{=}4$\,s),
+                                   120\,ms ($t{=}7$\,s) \\
+RC trigger times                 & $t{=}2$\,s, 5\,s, 8\,s \\
+SC observation times             & $t{=}1.5$, 3.5, 5.5, 7.5, 9.5\,s \\
+SE beacon gap times              & $t{=}3$\,s, 6\,s, 9\,s \\
+SC leakage threshold             & 5 observations per node \\
+SE oscillation threshold         & 2 missing beacons per node \\
+Trust score decrement per event  & 0.03 \\
+Initial RSU trust score          & 1.0 (fully trusted) \\
+Trust quarantine threshold       & 0.4 \\
+Performance metrics logged       & ADR (per variant), FPR, MCC, TTM, TSA \\
+Output files                     & CSV (per-epoch and per-event) \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:sim_params}, the simulation
+is configured with four attack variants injected at
+40\% node intensity across a 10\,s simulation window,
+with all performance metrics flushed to CSV every
+1\,s epoch.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Task~01: Performance Metric Infrastructure}
+% ─────────────────────────────────────────────────────────
+
+Task~01 (completed) implemented the full performance
+metric collection infrastructure within the NS3
+simulation. All six metrics defined in
+Section~\ref{sec:baselines} are computed and written
+to CSV at every 1\,s epoch interval by the function
+\texttt{dmap\_periodic\_flush}, which is scheduled
+using \texttt{Simulator::Schedule} at simulation
+start.
+
+The metric state maintained globally throughout the
+simulation is as follows. Per-variant Attack Detection
+Rate counters (\texttt{detected\_DI},
+\texttt{detected\_RC}, \texttt{detected\_SC},
+\texttt{detected\_SE}) track correctly detected
+attacks against the total injected count per variant.
+False Positive Rate accumulators track benign events
+incorrectly flagged. Time-to-Mitigate records the
+elapsed time between attack confirmation and
+enforcement of the quarantine or rerouting action.
+Trust Score Accuracy is derived from a per-RSU
+confusion matrix classifying each RSU as correctly
+high-trust, correctly low-trust, false-positive
+low-trust, or missed-compromise. Matthews Correlation
+Coefficient is computed from the aggregate confusion
+matrix across all variants. Per-RSU trust scores are
+initialised to~1.0 and decremented by~0.03 per
+attack event, flooring at~0.
+
+\subsubsection{Output File: \texttt{dmap\_epoch\_metrics.csv}}
+
+This file contains one row per simulation epoch and
+records the complete metric state at that moment.
+Table~\ref{tab:epoch_schema} describes all columns.
+
+\begin{table}[htb]
+\centering
+\caption{Column Schema of \texttt{dmap\_epoch\_metrics.csv}}
+\label{tab:epoch_schema}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lll}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+\hline
+\texttt{sim\_time\_sec}              & float  &
+  Simulation clock time in seconds \\
+\texttt{epoch\_id}                   & int    &
+  Epoch index (0-based) \\
+\texttt{mode}                        & string &
+  Defence mode active: LW or FULL \\
+\texttt{MCC\_DI/RC/SC/SE/ALL}        & float  &
+  Matthews Correlation Coefficient per variant and overall \\
+\texttt{ADR\_DI/RC/SC/SE/ALL}        & float  &
+  Attack Detection Rate per variant and overall \\
+\texttt{FPR\_DI/RC/SC/SE/ALL}        & float  &
+  False Positive Rate per variant and overall \\
+\texttt{latency\_overhead\_LW\_ms}   & float  &
+  Control-plane latency overhead in LW mode (ms) \\
+\texttt{latency\_overhead\_FULL\_ms} & float  &
+  Control-plane latency overhead in FULL mode (ms) \\
+\texttt{TTM\_DI/RC/SC/SE/ALL\_ms}    & float  &
+  Average Time-to-Mitigate per variant (ms) \\
+\texttt{TSA\_precision}              & float  &
+  Fraction of low-trust RSUs that were truly compromised \\
+\texttt{TSA\_recall}                 & float  &
+  Fraction of compromised RSUs that received low trust \\
+\texttt{TSA\_F1}                     & float  &
+  Harmonic mean of TSA precision and recall \\
+\texttt{TP\_ALL / TN\_ALL}           & int    &
+  True positive and true negative counts (all variants) \\
+\texttt{FP\_ALL / FN\_ALL}           & int    &
+  False positive and false negative counts (all variants) \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:epoch_schema}, the epoch
+metrics file captures 30 columns per row, covering
+per-variant and aggregate values for all five
+performance metrics together with the raw confusion
+matrix counts needed to reproduce any derived metric.
+
+\subsubsection{Output File: \texttt{dmap\_degradation.csv}}
+
+This file records a condensed metric snapshot at each
+epoch alongside the configured attack intensity
+percentage. Table~\ref{tab:degradation_schema}
+describes its columns.
+
+\begin{table}[htb]
+\centering
+\caption{Column Schema of \texttt{dmap\_degradation.csv}}
+\label{tab:degradation_schema}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lll}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+\hline
+\texttt{sim\_time\_ms} & int   &
+  Epoch simulation time in milliseconds \\
+\texttt{attack\_pct}   & int   &
+  Configured attack intensity percentage \\
+\texttt{ADR\_DI}       & float &
+  Attack Detection Rate for Delay Injection \\
+\texttt{ADR\_RC}       & float &
+  Attack Detection Rate for Race Condition \\
+\texttt{ADR\_SC}       & float &
+  Attack Detection Rate for Timing Side-Channel \\
+\texttt{ADR\_SE}       & float &
+  Attack Detection Rate for Synchronisation Exploit \\
+\texttt{FPR\_ALL}      & float &
+  Aggregate False Positive Rate \\
+\texttt{MCC\_ALL}      & float &
+  Aggregate Matthews Correlation Coefficient \\
+\texttt{avg\_TTM\_ms}  & float &
+  Average Time-to-Mitigate across all variants (ms) \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:degradation_schema}, this
+file stores nine columns per row and is designed to
+support cross-run comparison of metric quality as
+attack intensity is swept from 0 to 100\% across
+multiple simulation runs, enabling the degradation
+curves to be generated in the final evaluation chapter.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Task~02: Attack Scenario Implementation}
+% ─────────────────────────────────────────────────────────
+
+Task~02 (completed) implemented all four timing attack
+injection functions within \texttt{LDA.cc} and
+configured a degradation snapshot recorder. The four
+functions 
+\texttt{inject\_de\-lay\_in\-jec\-tion\_at\-tack},
+\texttt{inject\_race\_con\-di\-tion\_at\-tack},
+\texttt{inject\_side\_chan\-nel\_at\-tack}, and
+\texttt{inject\_sync\_ex\-ploit\_at\-tack}
+map to the existing malicious-node flag arrays
+(\texttt{flood\-ing\_ma\-li\-cious\_nodes} for DI,
+\texttt{fab\-ri\-ca\-tion\_ma\-li\-cious\_nodes} for RC,
+\texttt{MIM\_ma\-li\-cious\_nodes} for SC, and
+\texttt{van\-ish\-ing\_ma\-li\-cious\_nodes} for SE),
+ensuring compatibility with the existing routing and
+detection infrastructure.
+
+The number of attacking nodes is computed as:
+\begin{equation*}
+N_{\mathrm{attack}} =
+\left\lceil
+  \frac{\mathtt{attack\_percentage}}{100}
+  \times \mathtt{total\_size}
+\right\rceil
+\end{equation*}
+
+Table~\ref{tab:attack_schedule} shows the full
+injection schedule per attacking node.
+
+\begin{table}[htb]
+\centering
+\caption{Attack Injection Schedule per Attacking Node
+(Task~02, 40\% intensity)}
+\label{tab:attack_schedule}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
+\hline
+\textbf{Attack} & \textbf{Trigger Times (s)} &
+\textbf{Parameter logged} & \textbf{Effect modelled} \\
+\hline
+DI & 1.0, 4.0, 7.0 &
+  Injected delay (s) & Flow-Mod message buffered \\
+RC & 2.0, 5.0, 8.0 &
+  0 (flag only) & Contradictory link events \\
+SC & 1.5, 3.5, 5.5, 7.5, 9.5 &
+  Observation count & Passive timing corpus grows \\
+SE & 3.0, 6.0, 9.0 &
+  Beacon gap count & Handover oscillation triggered \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:attack_schedule}, the four
+attack variants are staggered across the 10\,s window
+to produce overlapping but distinct attack events,
+reflecting a realistic scenario where multiple attack
+types co-exist in the same network simultaneously.
+
+\subsubsection{Console Log Evidence}
+
+Figure~\ref{fig:log1} presents the NS3 simulation
+console output at $t{=}1$\,s and $t{=}2$\,s.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\linewidth]
+{Progress_Works/NS3-Images/sim_log1.png}
+\caption{NS3 simulation console output at $t{=}1$\,s
+and $t{=}2$\,s.}
+\label{fig:log1}
+\end{figure}
+\FloatBarrier
+
+As shown in Figure~\ref{fig:log1}, normal CSMA
+downlink and LTE uplink packet events precede the
+first attack injection. At $t{=}1$\,s,
+\texttt{inject\_delay\_injection\_attack} fires for
+all seven attacking nodes with 50\,ms injected delay,
+setting \texttt{flooding\_malicious\_nodes[i] = true}
+and decrementing each node's trust score by~0.03.
+At $t{=}1.5$\,s the first Side-Channel observation
+is logged for each node, incrementing
+\texttt{sc\_observation\_count} toward the leakage
+threshold of~5. At $t{=}2$\,s Race Condition events
+are triggered across all attacking nodes, setting
+\texttt{rc\_race\_active[i] = true} for each node.
+
+Figure~\ref{fig:log2} presents the NS3 simulation
+console output at $t{=}3$\,s to $t{=}4$\,s.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\linewidth]
+{Progress_Works/NS3-Images/sim_log2.png}
+\caption{NS3 simulation console output at $t{=}3$\,s
+to $t{=}4$\,s.}
+\label{fig:log2}
+\end{figure}
+\FloatBarrier
+
+As shown in Figure~\ref{fig:log2}, at $t{=}3$\,s
+the first Synchronisation Exploit fires for each
+attacking node, incrementing
+\texttt{se\_beacon\_gap[i]} toward the oscillation
+threshold of~2. SC observation~\#2 follows at
+$t{=}3.5$\,s. At $t{=}4$\,s the second DI wave
+increases the injected delay to 80\,ms, modelling
+an escalating attacker who progressively extends the
+buffering window to produce larger temporal deviations.
+
+Figure~\ref{fig:log3} presents the NS3 simulation
+console output at $t{=}5$\,s to $t{=}5.5$\,s.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\linewidth]
+{Progress_Works/NS3-Images/sim_log3.png}
+\caption{NS3 simulation console output at $t{=}5$\,s
+to $t{=}5.5$\,s.}
+\label{fig:log3}
+\end{figure}
+\FloatBarrier
+
+As shown in Figure~\ref{fig:log3}, Race Condition
+events fire a second time at $t{=}5$\,s across all
+attacking nodes. SC observation~\#3 is logged at
+$t{=}5.5$\,s, continuing the accumulation of the
+passive timing corpus. The progressive growth of the
+observation count across five trigger points reflects
+the enlarging statistical corpus that enables the
+attacker to infer control-plane timing patterns,
+corresponding to the side-channel amplification factor
+$\Phi_{\mathrm{SC}}(t)$ described in
+Section~\ref{sec:mobility_amp}.
+
+\subsubsection{Output File: \texttt{dmap\_attack\_scenario\_log.csv}}
+
+This file records every individual attack injection
+event produced during the simulation.
+Table~\ref{tab:attack_log_schema} describes its
+columns.
+
+\begin{table}[htb]
+\centering
+\caption{Column Schema of
+\texttt{dmap\_attack\_scenario\_log.csv}}
+\label{tab:attack_log_schema}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lll}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+\hline
+\texttt{time\_ms}     & int    &
+  Simulation time of injection event (ms) \\
+\texttt{node\_id}     & int    &
+  Index of the attacked RSU node \\
+\texttt{attack\_type} & string &
+  Attack variant: DI, RC, SC, or SE \\
+\texttt{param}        & float  &
+  Injected delay in seconds (DI); observation
+  count (SC); beacon gap count (SE); 0 for RC \\
+\texttt{attack\_pct}  & int    &
+  Configured attack intensity percentage \\
+\hline
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:attack_log_sample} shows a
+representative sample of rows from the 40\% attack
+run.
+
+\begin{table}[htb]
+\centering
+\caption{Sample Rows from
+\texttt{dmap\_attack\_scenario\_log.csv}
+(40\% attack intensity)}
+\label{tab:attack_log_sample}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{rrllr}
+\hline
+\textbf{time\_ms} & \textbf{node\_id} &
+\textbf{attack\_type} & \textbf{param} &
+\textbf{attack\_pct} \\
+\hline
+1000 & 0 & DI & 0.050 & 40 \\
+1000 & 1 & DI & 0.050 & 40 \\
+1000 & 2 & DI & 0.050 & 40 \\
+1000 & 3 & DI & 0.050 & 40 \\
+1000 & 4 & DI & 0.050 & 40 \\
+1000 & 5 & DI & 0.050 & 40 \\
+1000 & 6 & DI & 0.050 & 40 \\
+1500 & 0 & SC & 1     & 40 \\
+1500 & 1 & SC & 1     & 40 \\
+2000 & 0 & RC & 0     & 40 \\
+3000 & 0 & SE & 1     & 40 \\
+3500 & 0 & SC & 2     & 40 \\
+4000 & 0 & DI & 0.080 & 40 \\
+5500 & 0 & SC & 3     & 40 \\
+6000 & 0 & SE & 2     & 40 \\
+7000 & 0 & DI & 0.120 & 40 \\
+7500 & 0 & SC & 4     & 40 \\
+9000 & 0 & SE & 3     & 40 \\
+9500 & 0 & SC & 5     & 40 \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:attack_log_sample}, all
+seven attacking nodes receive DI events at
+$t{=}1000$\,ms with 50\,ms injected delay. SC
+observations accumulate from observation~\#1 at
+$t{=}1500$\,ms through observation~\#5 at
+$t{=}9500$\,ms, reaching the leakage threshold of~5
+by end of simulation. The DI injected delay escalates
+from 50\,ms to 80\,ms to 120\,ms across the three
+trigger points, and SE beacon gaps reach the
+oscillation threshold of~2 by $t{=}6000$\,ms.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Current Metric Values and Interpretation}
+% ─────────────────────────────────────────────────────────
+
+Inspection of both \texttt{dmap\_degradation.csv} and
+\texttt{dmap\_epoch\_metrics.csv} from the current
+preliminary runs shows that all metric values ---
+ADR, FPR, MCC, TTM, and TSA --- remain at~0.0 across
+all epochs at the current implementation stage. This
+is the expected and correct result, and it reflects
+an important architectural separation within the
+DMAP-SDVN implementation.
+
+The metric values are zero because the signature
+detection layer has not yet been connected to the
+confusion matrix update logic. Task~02 injects the
+four attack types and logs every event, but the
+classification of each event as a True Positive,
+False Negative, True Negative, or False Positive
+requires the four signature indicators
+$S_{\mathrm{DI}}$, $S_{\mathrm{RC}}$,
+$S_{\mathrm{SC}}$, $S_{\mathrm{SE}}$ from
+Section~\ref{sec:signatures} to be evaluated and
+used to increment the TP, TN, FP, FN counters inside
+\texttt{dmap\_periodic\_flush}. This connection is
+the primary objective of Task~03.
+
+The zero-metric result is itself meaningful: it
+quantifies the performance of the \emph{undefended}
+system --- a network that receives all four attack
+types but has no active detection mechanism. This
+constitutes the pre-DMAP baseline against which the
+defended framework will be compared in the final
+evaluation. Table~\ref{tab:zero_baseline} summarises
+this baseline state.
+
+\begin{table}[htb]
+\centering
+\caption{Undefended Baseline Metric Values
+(Task~02 Only, No Signature Detection Active)}
+\label{tab:zero_baseline}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrl}
+\hline
+\textbf{Metric} & \textbf{Value} &
+\textbf{Interpretation} \\
+\hline
+ADR (all variants) & 0.00 &
+  No attacks detected --- zero true positives \\
+FPR                & 0.00 &
+  No benign events flagged --- zero false positives \\
+MCC                & 0.00 &
+  No classification decisions made \\
+avg TTM            & 0\,ms &
+  No mitigation triggered \\
+TSA Precision      & 0.00 &
+  No trust-based isolation decisions \\
+TSA Recall         & 0.00 &
+  All compromised nodes missed by detection \\
+TP / TN / FP / FN  & 0 / 0 / 0 / 0 &
+  Confusion matrix empty pending Task~03 \\
+\hline
+\end{tabular}
+\end{table}
+
+As shown in Table~\ref{tab:zero_baseline}, the
+complete absence of detection activity confirms that
+the simulation is operating as an undefended baseline.
+This result will serve as the reference point for the
+Task~03 evaluation, where the DMAP-SDVN signature
+detection layer is expected to produce non-zero ADR,
+MCC, and TTM values demonstrating measurable detection
+and mitigation capability.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Trust Score Degradation Under Attack}
+% ─────────────────────────────────────────────────────────
+
+Although detection metrics remain at zero pending
+Task~03, the trust score degradation produced by the
+attack injection functions is active and observable.
+Each attack event decrements the attacked node's
+trust score by~0.03 as implemented in the injection
+functions and consistent with the trust update rule
+in Section~\ref{sec:blockchain}.
+
+Across the 10\,s simulation at 40\% intensity, each
+attacking node receives 3~DI events, 3~RC events,
+5~SC observations, and 3~SE events, totalling
+14~trust decrements of~0.03 each. This reduces each
+node's trust score from $\psi_r = 1.0$ to:
+\begin{equation*}
+\psi_r = 1.0 - (14 \times 0.03) = 0.58
+\end{equation*}
+
+This value remains above the quarantine threshold
+$\psi_{\mathrm{low}} = 0.4$, confirming that the
+current 40\% attack intensity produces measurable
+trust degradation without yet triggering automatic
+RSU isolation. At higher attack intensities to be
+evaluated in Task~03, more frequent events will push
+trust scores below $\psi_{\mathrm{low}}$, activating
+the smart-contract quarantine path and producing
+non-zero TTM values.
+
+Figure~\ref{fig:attack_timeline} presents the
+complete attack event timeline and the corresponding
+per-node trust score degradation trajectory over the
+10\,s simulation window.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\linewidth]
+{Progress_Works/NS3-Images/dmap_attack_timeline.png}
+\caption{Attack event timeline and trust score
+degradation across seven attacking nodes under
+40\% attack intensity over a 10\,s simulation window.}
+\label{fig:attack_timeline}
+\end{figure}
+\FloatBarrier
+
+As shown in Figure~\ref{fig:attack_timeline}, the
+upper panel confirms that all four attack variants
+--- DI, RC, SC, and SE --- are injected at the
+scheduled times across all seven nodes, with DI
+delay escalating from 50\,ms at $t{=}1$\,s to
+80\,ms at $t{=}4$\,s and 120\,ms at $t{=}7$\,s.
+The lower panel shows the step-wise trust score
+trajectory for a representative node, decreasing
+monotonically from~1.0 to~0.58 across 14 events,
+remaining above $\psi_{\mathrm{low}} = 0.40$
+throughout the simulation and thereby confirming
+that no automatic quarantine is triggered at
+40\% attack intensity.
+
+% ─────────────────────────────────────────────────────────
+\subsection{Implementation Status and Next Steps}
+% ─────────────────────────────────────────────────────────
+
+Table~\ref{tab:task_status} summarises the current
+implementation status against the four tasks assigned
+by the supervisor.
+
+\begin{table}[htb]
+\centering
+\caption{Implementation Task Status}
+\label{tab:task_status}
+\begin{tabularx}{\linewidth}{l X l} % Adjusted to 3 columns: Task (l), Description (X), Status (l)
+\hline
+\textbf{Task} & \textbf{Description} & \textbf{Status} \\
+\hline
+01 & Implement all PEMs and save to CSV periodically & \textbf{Complete} \\
+02 & Implement all four attack scenarios and establish undefended baseline & \textbf{Complete} \\
+03 & Implement full signature detection for all four variants and show metric improvement & In progress \\
+04 & Complete result figures and finalise report for supervisor signature & Pending \\
+\hline
+\end{tabularx}
+\end{table}
+
+As shown in Table~\ref{tab:task_status}, Tasks~01
+and~02 are complete. Task~03 will implement the four
+attack signature indicators from
+Section~\ref{sec:signatures} inside the NS3
+simulation and connect them to the confusion matrix
+update logic within \texttt{dmap\_periodic\_flush}.
+Once connected, the TP, TN, FP, and FN counters will
+accumulate correctly per epoch, producing non-zero
+ADR, MCC, FPR, and TTM values. Comparison of these
+defended metric values against the zero-valued
+undefended baseline from Task~02 will directly
+quantify the detection improvement delivered by the
+DMAP-SDVN signature detection layer. Task~04 will
+then complete all remaining result figures and
+submit the final report for supervisor review and
+signature.

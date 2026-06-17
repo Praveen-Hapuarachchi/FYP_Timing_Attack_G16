@@ -1,0 +1,239 @@
+\section{Timeline and Resources Required}
+
+\subsection{Timeline}
+
+The project timeline spans 26 weeks, organized into 11 major milestones as illustrated in Figure \ref{fig:timeline}. Each milestone encompasses specific tasks designed to ensure systematic progress toward the development and evaluation of the proposed blockchain, deep reinforcement learning, and LLM-based defense framework for SDVN timing attacks.
+
+\subsubsection*{Milestone 1: Project Topic Selection and Initial Planning (Weeks 1-2)}
+\begin{itemize}
+    \item Review project requirements and scope
+    \item Conduct preliminary research on SDVN security challenges
+    \item Finalize project topic and obtain supervisor approval
+    \item Establish team roles and communication protocols
+\end{itemize}
+
+\subsubsection*{Milestone 2: Background Study and Literature Review (Weeks 2-4)}
+\begin{itemize}
+    \item Study fundamental concepts of SDN and SDVN architectures
+    \item Review existing research on control plane timing attacks
+    \item Investigate blockchain applications in network security
+    \item Explore deep reinforcement learning and LLM technologies
+    \item Conduct comprehensive literature survey on related defense mechanisms
+\end{itemize}
+
+\subsubsection*{Milestone 3: Project Proposal Submission (Weeks 4-5)}
+\begin{itemize}
+    \item Finalize problem statement and research objectives
+    \item Complete methodology design and timeline planning
+    \item Prepare and submit comprehensive project proposal
+    \item Incorporate supervisor feedback and revisions
+\end{itemize}
+
+\subsubsection*{Milestone 4: Attack Pattern Analysis and Characterization (Weeks 5-7)}
+\begin{itemize}
+    \item Characterize delay injection attack patterns
+    \item Analyze race condition exploitation scenarios
+    \item Study timing side-channel attack mechanisms
+    \item Investigate synchronization exploit vulnerabilities
+    \item Document attack models and threat scenarios
+\end{itemize}
+
+\subsubsection*{Milestone 5: Blockchain Component Development (Weeks 7-10)}
+\begin{itemize}
+    \item Design blockchain architecture for timing event logging
+    \item Implement Hyperledger Fabric network setup
+    \item Develop smart contracts for timestamp verification
+    \item Implement consensus mechanisms for timing integrity
+    \item Test blockchain component independently
+\end{itemize}
+
+\subsubsection*{Milestone 6: Deep Reinforcement Learning Framework (Weeks 10-13)}
+\begin{itemize}
+    \item Design DRL agent architecture and state-action space
+    \item Implement reward function for timing policy optimization
+    \item Develop training pipeline using PyTorch
+    \item Train DRL model with simulated attack scenarios
+    \item Evaluate and fine-tune model performance
+\end{itemize}
+
+\subsubsection*{Milestone 7: Large Language Model Integration (Weeks 13-15)}
+\begin{itemize}
+    \item Integrate Hugging Face Transformers framework
+    \item Develop log analysis and interpretation modules
+    \item Implement contextual threat intelligence system
+    \item Design alert generation and recommendation engine
+    \item Test LLM contextual understanding capabilities
+\end{itemize}
+
+\subsubsection*{Milestone 8: System Integration and Hybrid Framework Development (Weeks 15-17)}
+\begin{itemize}
+    \item Integrate blockchain, DRL, and LLM components
+    \item Implement time synchronization protocols (PTP/NTP)
+    \item Develop rate limiting and buffering mechanisms
+    \item Create unified defense framework interface
+    \item Conduct integration testing and debugging
+\end{itemize}
+
+\subsubsection*{Milestone 9: NS3 Simulation Implementation (Weeks 17-20)}
+\begin{itemize}
+    \item Set up NS3 environment and SDVN modules
+    \item Implement vehicular mobility models
+    \item Configure attack scenarios and network topologies
+    \item Deploy integrated defense framework in NS3
+    \item Validate simulation accuracy and reliability
+\end{itemize}
+
+\subsubsection*{Milestone 10: Performance Evaluation and Analysis (Weeks 20-24)}
+\begin{itemize}
+    \item Conduct extensive simulation experiments
+    \item Measure attack detection rate and false positive rate
+    \item Evaluate system latency and throughput metrics
+    \item Compare results with existing defense mechanisms
+    \item Perform statistical analysis and result validation
+    \item Identify areas for optimization and improvement
+\end{itemize}
+
+\subsubsection*{Milestone 11: Documentation and Publication (Weeks 24-26)}
+\begin{itemize}
+    \item Prepare comprehensive final project report
+    \item Create presentation materials for demonstration
+    \item Write research paper for journal submission
+    \item Prepare for final presentation and viva voce
+    \item Submit all deliverables and documentation
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth,angle=90]{project_timeline.png}
+    \caption{Project Timeline - Gantt chart showing the 26-week schedule with 11 major milestones and their respective durations.}
+    \label{fig:timeline}
+\end{figure}
+
+\subsection{Resources Required}
+
+Successful implementation of the proposed defense framework requires specific hardware, software, and computational resources as outlined below.
+
+\subsubsection{Hardware Resources}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Component} & \textbf{Specification} \\
+\hline
+Processor & Intel Core i7 / AMD Ryzen 7 (or equivalent) \\
+\hline
+RAM & 16GB minimum (32GB recommended) \\
+\hline
+Storage & 200GB free space for simulations and datasets \\
+\hline
+GPU & NVIDIA GPU with CUDA support (for DRL training) \\
+\hline
+Network & Stable internet connection for cloud resources \\
+\hline
+\end{tabular}
+\caption{Hardware Requirements}
+\label{tab:hardware}
+\end{table}
+
+\subsubsection{Software Resources}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Category} & \textbf{Software/Tool} & \textbf{Cost} \\
+\hline
+Network Simulation & NS3 (Network Simulator 3) & Free (Open Source) \\
+\hline
+Programming Language & Python 3.8+ & Free (Open Source) \\
+\hline
+& C++ Compiler (GCC/Clang) & Free (Open Source) \\
+\hline
+Blockchain Platform & Hyperledger Fabric 2.x & Free (Open Source) \\
+\hline
+& Docker \& Docker Compose & Free (Open Source) \\
+\hline
+Deep Learning & PyTorch Framework & Free (Open Source) \\
+\hline
+& TensorFlow (optional) & Free (Open Source) \\
+\hline
+& CUDA Toolkit & Free \\
+\hline
+LLM Framework & Hugging Face Transformers & Free (Open Source) \\
+\hline
+Optimization & GurobiPy Academic License & Free (Academic) \\
+\hline
+Data Processing & NumPy, Pandas & Free (Open Source) \\
+\hline
+Visualization & Matplotlib, Seaborn & Free (Open Source) \\
+\hline
+Development Tools & Git, Jupyter Notebook & Free (Open Source) \\
+\hline
+Documentation & LaTeX & Free (Open Source) \\
+\hline
+\end{tabular}
+\caption{Software and Development Tools}
+\label{tab:software}
+\end{table}
+
+\subsubsection{Cloud and Computational Resources (Optional)}
+
+For intensive simulations and large-scale experiments, cloud computing resources may be utilized:
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Resource} & \textbf{Estimated Cost} \\
+\hline
+Cloud Computing (AWS/GCP/Azure) & \$50-100 for 100-200 compute hours \\
+\hline
+Cloud Storage & \$10-20 per month \\
+\hline
+GPU Instances (if needed) & \$100-200 for intensive training \\
+\hline
+\textbf{Total Estimated Cloud Cost} & \textbf{\$160-320 (project duration)} \\
+\hline
+\end{tabular}
+\caption{Estimated Cloud Computing Costs (Optional)}
+\label{tab:cloud}
+\end{table}
+
+\subsubsection{Reference and Learning Resources}
+
+\begin{itemize}
+    \item \textbf{Academic Databases:} Access to IEEE Xplore, ACM Digital Library, ScienceDirect, and Springer for research papers
+    \item \textbf{Documentation:} Official documentation for NS3, Hyperledger Fabric, PyTorch, and Hugging Face
+    \item \textbf{Online Courses:} Coursera, edX, and YouTube tutorials for specialized topics
+    \item \textbf{Technical Support:} University computing resources and supervisor consultations
+\end{itemize}
+
+\subsubsection{Cost Summary}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Resource Category} & \textbf{Estimated Cost (USD)} \\
+\hline
+Hardware (personal computers) & \$0 (using existing equipment) \\
+\hline
+Open Source Software & \$0 \\
+\hline
+Academic Software Licenses & \$0 (free academic licenses) \\
+\hline
+Cloud Computing (optional) & \$160-320 \\
+\hline
+Research Paper Access & \$0 (university subscriptions) \\
+\hline
+Miscellaneous & \$50 \\
+\hline
+\textbf{Total Estimated Budget} & \textbf{\$210-370} \\
+\hline
+\end{tabular}
+\caption{Overall Project Budget Estimate}
+\label{tab:budget}
+\end{table}
+
+The project is designed to be cost-effective by leveraging open-source tools and academic licenses. The primary costs involve optional cloud computing resources for large-scale simulations and miscellaneous expenses for documentation and presentation materials.

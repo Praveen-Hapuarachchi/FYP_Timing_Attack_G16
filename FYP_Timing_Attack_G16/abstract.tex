@@ -1,0 +1,51 @@
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+\begin{comment}
+Control plane timing attacks in Software-Defined Vehicular Networks (SDVN) are a security concern that may compromise the reliability and safety of time based vehicular systems. Such attacks interfere with the functioning of the network, slow down critical control messages, and ruin vital services (intersection coordination, collision avoidance, emergency response systems) by taking advantage of differences in the timing of message delivery. The isolated methods of mitigation that have been examined in the literature previously, such as machine-learning-based detection ~\cite{Shoaib2023Detection}, blockchain-based logging ~\cite{Mozumder2020Blockchain}, and controller-side monitoring ~\cite{Xu2015Race}, have not explored the comprehensive framework that is capable of dealing with all three aspects of decentralization, adaptivity, and smart interpretation.
+
+The current research suggests a new, multi-layered defense architecture that integrates and combines blockchain technology, deep reinforcement learning (DRL), and large language models (LLMs) to address control-plane timing attacks in SDVNs. The blockchain module provides difficult to alter and immutable records of timing events and imposes agreement upon message synchronization with verifiable timestamps. The DRL module supports dynamic detection and response to anomalies by optimizing timing policies through the use of dynamic learning and rewarding low-latency responses and punishing suspicious delays. LLM module complements intelligent threat analysis and handles complex timing logs and generates contextual insights to inform decision-making and the generation of alerts.
+
+The suggested framework specifically addresses four major attack vectors, which are delay injection, race-condition exploitation, timing side-channel, and synchronization exploits. With the combination of these improved technologies, it ensures timing integrity of the system, proactive threat detection, and low-latency functionality in highly dynamic vehicular environments. Python libraries to be used in implementation will include Hugging Face Transformers as an LLM, PyTorch as deep reinforcement learning, Hyperledger Fabric as blockchain and Network Simulator 3 (NS3) as SDVN simulator.
+
+The performance measurement will focus on such main metrics as the attack detection rate, false-positive rate, latency overhead, system throughput and timing accuracy during a variety of attack conditions. The anticipated results include increased resilience to security, enhanced timing integrity, and real developments in the area of smart transportation system security. The study aims to provide meaningful inputs to the field of vehicular network security in the form of peer-reviewed journal articles and conference papers, thus, providing a holistic solution that will fill the critical gaps in SDVN security models.
+\end{comment}
+
+Control-plane timing attacks in Software-Defined Vehicular Networks
+(SDVNs) — encompassing delay injection, race-condition exploitation,
+timing side-channel leakage, and synchronisation exploits — are
+critically amplified by vehicular mobility, which continuously
+restructures the control-plane topology and compresses legitimate
+decision windows. However, existing defences  calibrate detection thresholds against static network topologies, rendering them unable to distinguish 
+mobility-induced timing variation from adversarial manipulation — producing false positives that surge with handover frequency; rely exclusively on classically vulnerable authentication schemes susceptible to quantum-enabled timing forgery over vehicular infrastructure's multi-decade deployment horizon; 
+provide no semantic disambiguation between attack and congestion patterns; and offer no tamper-proof automated enforcement mechanism capable of responding within the sub-100\,ms latency bounds that collision avoidance and intersection coordination safety services demand. This paper proposes \textbf{DMAP-SDVN}, a Dual-Mode Adaptive Protection framework that addresses all four attack
+variants in a unified, mobility-aware architecture. First, a formal
+mobility-induced amplification model quantifies how vehicular
+dynamics enlarge the attack surface for each variant. Second,
+precise attack signatures are identified enabling a rule-based
+\emph{Lightweight Mode} with HMAC-based authentication deployable
+at resource-constrained RSUs with $O(1)$ per-message overhead.
+Third, a \emph{Full Mode} integrates a Deep Reinforcement Learning
+(DRL) agent formulated as a Markov Decision Process with
+mobility-aware state, action, and per-variant reward components;
+Hyperledger Fabric smart contracts with IPFS-anchored timing proofs
+serving dual roles as detection evidence aggregators and mitigation
+enforcers; and a post-quantum cryptographic layer employing
+CRYSTALS-Dilithium (ML-DSA, FIPS~204) signatures, threshold
+signatures for distributed RSU consensus, and Zero-Knowledge Proofs
+for privacy-preserving timing attestation. An LLM module provides dual-function intelligence: online contextual anomaly scoring that augments the DRL state vector in real time, and offline forensic log interpretation generating human-readable incident reports that distinguish attack-induced timing anomalies from
+mobility-induced variability. A resource-aware switching policy dynamically
+selects between modes based on threat level and RSU resource
+availability. The framework is evaluated via NS3 simulation under
+urban, highway, and mixed-traffic scenarios against three external
+baselines and five internal ablations using Matthews Correlation
+Coefficient, Attack Detection Rate, False Positive Rate,
+Control-Plane Latency Overhead, Time-to-Mitigate, and Trust Score
+Accuracy. DMAP-SDVN is the first framework to jointly address
+mobility-amplified SDVN timing attacks with a dual-mode,
+PQC-enforced, smart-contract-mitigated architecture, advancing
+the security of safety-critical intelligent transportation systems.
+
+
+\thispagestyle{plain}
+\newpage

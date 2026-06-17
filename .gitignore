@@ -1,0 +1,39 @@
+# NS3 build artifacts
+*.o
+*.a
+*.so
+*.d
+
+# Large generated CSV files
+security_*.csv
+metrics_*.csv
+dmap_epoch_metrics.csv
+dmap_degradation.csv
+dmap_attack_scenario_log.csv
+dmap_trust_log.csv
+dmap_detection_log.csv
+dmap_ttm_log.csv
+dmap_latency_log.csv
+dmap_variant_detail.csv
+optimization_link_lifetime_data.csv
+
+# NetAnim XML
+*.xml
+
+# Plots
+*.png
+*.pdf
+
+# Logs
+*.txt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Backups
+*.task02_backup
+*.task03_backup

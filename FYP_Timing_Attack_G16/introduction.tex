@@ -1,0 +1,233 @@
+\section{Introduction}
+
+\subsection{Background}
+
+\subsubsection{Software-Defined Vehicular Networks}
+
+Software-Defined Vehicular Networks is the next generation of the traditional Vehicular Ad-Hoc Networks (VANETs) having the added programmability and centralized control benefits of SDN architecture \cite{islam2021software}. In SDVNs, one can have a centralized controller that has a global perspective of the topology of the network, which supports intelligent routing decisions through complete network state knowledge \cite{abugabah2020intelligent}. Such architecture brings with itself several advantages, such as simplified network control, dynamic traffic control, and the ability to apply complex algorithms of resource allocation and quality-of-service optimization \cite{he2016cost, gao2018hierarchical}.
+
+The recent advancements on SDVN studies have concentrated on increasing the routing efficiency and network performance in general. The prediction of the stability of links via machine-learning methods as well as the optimization of routing choices in a highly dynamic vehicular setting has been used \cite{wijesekara2023machine}. Routing protocols which are energy efficient are developed in order to increase the lifetime of the network and maintain the quality of the services provided \cite{renuka2021sdn, e2024improving}. In addition, the concept of multipath routing has been considered in order to enhance the throughput and reliability through load balancing among various paths \cite{awad2021machine, yan2018improving, wijesekara2025qlpmr}.
+
+\subsubsection{Challenges in SDVN Security}
+
+However, centralized control plane creates novel security weaknesses that can be used by malicious entities \cite{Xu2015Race}. The fact that SDVN is particularly vulnerable to timing-based attacks due to the timing-sensitive relay of control plane communications \cite{Shoaib2021Timing, Arif2019Timing}. They take advantage of the inherent properties of the control plane architecture, in which switches and network nodes rely on the controller to install flow-rules and update paths and synchronization in time \cite{Cao2018CrossPath}. The manipulation of these timing mechanisms may trigger cascading effects within the network, which has negative implications on network performance and application-level services.
+
+\subsubsection{Blockchain Technology}
+
+Consistent with its ability to provide tamper-proof distributed ledger systems that have strong consistency guarantees, blockchain technology has received great interest \cite{Mozumder2020Blockchain}. In the field of network security, blockchain may offer unalterable recording of timing events, verifiable timestamps through consensus algorithms, and decentralized trust without having a central authority \cite{Derhab2021BMC}. The properties make blockchain especially appropriate in countering timing-manipulation attacks in SDVN.
+
+\subsubsection{Deep Reinforcement Learning}
+
+Deep reinforcement learning is an effective technology of adaptive defense mechanism \cite{Kanimozhi2022DRL}. In contrast to traditional rule-based security systems, DRL agents do not have any predetermined policies to follow, but acquire optimal policies via interaction with the environment and constantly evolve them based on the observed results \cite{rischke2020qrsdn, chen2022rlmr}. Within the framework of timing-attack defense, DRL has the potential to facilitate time-policies learning and optimization, proactive identification of anomalies, and adaptive response policy that changes with the attack patterns.
+
+\subsubsection{Large Language Models}
+
+Massive language models have shown impressive abilities to discern multifaceted patterns, process natural-language descriptions, and provide wise decision support \cite{Zhang2024LLM}. Learning logs In security use cases, LLCs may be utilized to read timing logs, contextualize attack patterns, give human-understandable alerts and advice, and support more intelligent threat management with subtle understanding of network behaviors and attack attributes.
+
+\subsection{Motivation to the Problem}
+
+The modern intelligent transportation systems are based on vehicular communication networks that enable the exchange of critical real-time data among vehicles, infrastructure, and entities within the network \cite{hartenstein2008tutorial}. Some fundamental applications, such as collision avoidance, intersection coordination, traffic management and emergency response systems, are based on these networks \cite{islam2021software}. Software-Defined Vehicular Networks (SDVNs) have become a more promising framework that leverages the flexibility of Software-Defined Networking (SDN) concepts to deal with highly dynamic vehicular exegeses \cite{cardona2020software, mekki2021software}. SDVNs also provide centralized network control, intelligent routing choices, and dynamic resource allocation based on real-time network situation by separating the control plane and the data plane \cite{malakar2024survey, abugabah2020intelligent}.
+
+Although these are the benefits, SDVNs face serious insecurity threats especially due to control plane timing attacks \cite{Shoaib2021Timing, Arif2019Timing}. These advanced attacks take advantage of the temporal properties of control messages and synchronization schemes to interfere with network functions and to undermine quality of service, and may even trigger life-threatening conditions in safety-critical car systems \cite{Xu2015Race, Cao2018CrossPath}. Controlled plane timing attacks include delay injection, race-condition exploitation, timing side-channel attacks, and synchronization exploits, which may lead to delayed or lost safety-critical messages, e.g. collision notifications, intersection coordination, platooning messages, etc. \cite{Arif2019Timing}. These attacks thus provide physical impacts, such as traffic jams, car accidents, and emergency intervention, which are notably effective in practice in high-density urban or highway conditions where timing is critical.
+
+\subsection{Limitations of Existing Works}
+
+Despite the previous work concerning detection techniques of timing attacks in SDN and SDVN-setting \cite{Shoaib2023Detection}, the current research has a significant number of limitations:
+
+\begin{itemize}
+    \item \textbf{Isolated Detection Techniques:} The current security systems generally include isolated detection techniques without offering multi-layered defense mechanisms \cite{Shoaib2023Detection}. These methods cannot withstand the type of multi-vector attacks that can involve the use of disparate timing attacks.
+    
+    \item \textbf{Reactive Versus Proactive:} The majority of modern strategies are based on reactive scanning as opposed to proactive protection \cite{Kanimozhi2022DRL}. A timing attack can also be detected before a lot of harm is done especially in time-based safety use that may require timely response, especially by traditional monitoring.
+    
+    \item \textbf{Performance-Security Trade-off:} Sometimes the solutions that are available do not maintain the low-latency needs that the vehicular applications need and to implement security. Additional delays can be added by security overhead, which can weaken the goal of ensuring timing integrity.
+    
+    \item \textbf{Absence of Technology Integration:} The existing studies do not represent any integrated frameworks that combine advanced technologies, including blockchain, deep reinforcement learning, and large language models to provide a complete timing-attack defense \cite{Mozumder2020Blockchain, Kanimozhi2022DRL, Zhang2024LLM}. Although these technologies have potential on their own, their combination to create SDVN timing-attack mitigation has not been investigated.
+    
+    \item \textbf{Static Defense Mechanisms:} The dynamic characteristics of vehicular networks, namely high mobility, high turnover of topology, and variability of network characteristics require defense mechanisms which can be able to adapt real-time. Single, unchanging security policies and fixed-threshold detection systems cannot be effective in dealing with a changing threat environment.
+\end{itemize}
+
+\subsection{Problem Statement}
+\begin{comment}
+The existing control-plane timing-attack defenses of SDVNs are unable to resiliently detect and neutralize the various timing-manipulation attacks - such as delay injection, race conditions, side-channel attacks and synchronization exploits - in the face of decentralized, low-latency and highly dynamic vehicular mobility conditions.
+\end{comment}
+
+Mobility-amplified control-plane timing attacks in Software-Defined Vehicular
+Networks — spanning delay injection, race-condition exploitation, timing
+side-channel leakage, and synchronisation exploits — cannot be reliably
+detected or mitigated by existing single-mode, non-quantum-resistant
+defences, thereby creating exploitable temporal vulnerabilities that directly
+endanger safety-critical vehicular services including collision avoidance,
+intersection coordination, and emergency response.
+
+\subsection{Objectives and Scope}
+
+\subsubsection{Objectives}
+
+The following are the research objectives:
+
+\begin{itemize}
+    \item Design and implement a unified defense architecture that integrates blockchain technology to provide tamper-resistant timing event log and consensus with deep reinforcement learning to provide adaptive anomaly detection and response and large language models to provide intelligent threat analysis and support decision making.
+    
+    \item Simulate and test the suggested defense model with Network Simulator 3 (NS3) on a diverse set of attack conditions and network setups.
+    
+    \item Test the usefulness of the proposed solution by providing an overall evaluation of performance, in terms of detection rate, false-positives rate, latency overhead, and system throughput against the current defense mechanisms.
+\end{itemize}
+
+\begin{comment}
+...
+\end{comment}
+
+\subsection{Research Questions}
+\label{sec:rqs}
+
+\begin{enumerate}
+
+\item[\textbf{RQ1.}] How does vehicular mobility quantitatively
+amplify the exploitability of each control-plane timing attack
+variant in SDVN, and can this amplification be captured in a
+closed-form mobility-aware model?
+
+\item[\textbf{RQ2.}] Can a rule-based lightweight detection mode
+using attack-specific temporal signatures achieve acceptable
+detection accuracy ($\mathrm{MCC} > 0.85$) while remaining
+deployable on resource-constrained RSUs with $O(1)$ overhead?
+
+\item[\textbf{RQ3.}] Does integrating CRYSTALS-Dilithium PQC
+signing with threshold-signature RSU consensus and ZKP timing
+attestation completely mitigate the four timing attack variants
+post-detection, and at what control-plane latency overhead?
+
+\item[\textbf{RQ4.}] Does the dual-mode adaptive framework
+(DMAP-SDVN) achieve significantly superior MCC, ADR, FPR, and
+TTM compared to the three external baselines and five internal
+ablations across urban, highway, and mixed-traffic SDVN scenarios?
+\end{enumerate}
+
+\subsubsection{Scope}
+
+This paper specifically focuses on control-plane timing attacks in Software-Defined Vehicular Networks, specifically on the distributed vehicular network architecture as the case of application. It discusses four major variants of attacks, specifically delay-injection attacks, race-condition attacks, timing side-channel attacks, and synchronization attacks. The defense system combines three fundamental technologies such as blockchain, deep reinforcement learning, and large language models into a security system. It is implemented by simulation-based evaluation instead of physical deployment on a testbed by using Network Simulator 3 (NS3) to simulate the network, Hyperledger Fabric to implement a blockchain, PyTorch to use deep reinforcement learning, and Hugging Face Transformers to incorporate large language models. The project is concerned with the vehicular situations that involve urban intersection, highway conditions, and mixed traffic conditions.
+
+Performance analysis will focus on the most important metrics, such as the rate of attack detection, false-positive rate, system latency when there are normal and attack events, throughput reduction when defense is active, latency and accuracy of timing, and resource cost of the defense infrastructure. The suggested solution will be compared with the currently used timing-attack detection and mitigation methods to show the enhancement in terms of the security effectiveness and the preservation of the network performance.
+
+Physical implementation or actual deployment of the project is not included; however, rather intensive simulation-based analysis is done to test the ideas proposed and show that they are implementable in the real world.
+
+\subsection{Contributions}
+
+This study makes the following key contributions to the field of Software-Defined Vehicular Network (SDVN) security:
+\begin{comment}
+...
+\end{comment}
+\begin{comment}
+\begin{itemize}
+    \item \textbf{Formalization of control-plane timing attacks as a timing integrity problem in SDVNs.}  
+    Unlike prior works that treat timing attacks as isolated performance anomalies, this research explicitly models control-plane timing manipulation as a timing integrity assurance problem under vehicular mobility, partial connectivity, and strict low-latency constraints.
+
+    \item \textbf{A unified multi-layer defense architecture for SDVN timing attacks.}  
+    This work proposes a novel defense framework that systematically maps different timing attack vectors—delay injection, race-condition exploitation, timing side-channel leakage, and synchronization exploits—into coordinated defense layers, enabling joint protection of the SDVN control plane.
+
+    \item \textbf{Decentralized timing verification model using blockchain consensus.}  
+    A new blockchain-based timing verification model is introduced, where RSUs and controllers generate cryptographically verifiable timing summaries that are validated through decentralized consensus, eliminating reliance on a single trusted controller and enabling tamper-resistant timing validation.
+
+    \item \textbf{Adaptive timing-defense formulation based on reinforcement learning.}  
+    The proposed model formulates timing defense as a sequential decision-making problem, allowing a deep reinforcement learning agent to dynamically adapt mitigation actions based on observed timing deviations, rather than relying on static thresholds or rule-based detection.
+
+    \item \textbf{Integration of explainable intelligence for timing-attack interpretation.}  
+    This study incorporates large language model–based interpretation to analyze complex timing logs and generate contextual explanations and security insights, enabling explainable and human-interpretable defense decisions within SDVN environments.
+\end{itemize}
+\end{comment}
+
+This work makes the following contributions to SDVN security:
+
+\begin{enumerate}
+
+\item \textbf{Mobility-Induced Threat Amplification Model.}
+The first formal quantitative model characterising how vehicular
+mobility amplifies each of the four control-plane timing attack
+variants~\eqref{eq:phi_di}--\eqref{eq:phi_se}, establishing
+mobility-induced amplification as a fundamental SDVN security
+metric absent from all prior timing-attack analyses.
+
+\item \textbf{Attack Signature Identification.}
+Precise, measurable behavioural signatures~\eqref{eq:sig_di}--
+\eqref{eq:sig_se} are formally identified for all four attack
+variants, enabling rule-based lightweight detection deployable
+on resource-constrained RSUs with $O(1)$ overhead and serving
+as the seed features for the Full-mode DRL state vector.
+
+\item \textbf{Dual-Mode Adaptive Defence Architecture.}
+A novel resource-aware dual-mode framework (DMAP-SDVN) that
+dynamically switches between lightweight and full defence modes
+via a formally defined switching policy~\eqref{eq:mode_switch},
+directly addressing the practical deployment feasibility gap
+in all existing timing-attack defences.
+
+\item \textbf{Mobility-Aware DRL Detection with MDP Formulation.}
+A DRL agent with a state space~\eqref{eq:state} incorporating all
+four attack-variant features alongside vehicular mobility context,
+formulated as an MDP with per-variant reward decomposition~
+\eqref{eq:r_det}--\eqref{eq:r_mit} and actor-critic policy
+update~\eqref{eq:policy}, enabling adaptive detection that
+distinguishes mobility-induced timing variation from adversarial
+manipulation.
+
+\item \textbf{PQC-Enforced Mitigation with Threshold Signatures
+and ZKP.} Integration of CRYSTALS-Dilithium (ML-DSA, FIPS~204)
+for control-plane message signing~\eqref{eq:sign}, a $t$-of-$n$
+threshold signature scheme for distributed RSU consensus-based
+timing proof acceptance~\eqref{eq:thresh_agg}, and zk-SNARK
+Zero-Knowledge Proofs for privacy-preserving timing attestation
+~\eqref{eq:zkp_prove} that prevent secondary side-channel leakage
+from the defence mechanism itself.
+
+\item \textbf{Dual-Role Blockchain with IPFS Real-Time Anchoring.}
+Hyperledger Fabric smart contracts serve two distinct roles:
+detection evidence aggregation via IPFS-anchored timing-proof
+commitments~\eqref{eq:commitment}--\eqref{eq:consensus}, and
+mitigation enforcement via PQC-authenticated trust revocation
+and RSU isolation~\eqref{eq:trust_update}, with IPFS enabling
+real-time evidence anchoring without blocking consensus.
+
+\item \textbf{Dual-Function LLM Intelligence with Formal
+Input Representation and DRL Integration.}
+A formally designed LLM module with structured timing-log
+tokenisation~\eqref{eq:llm_input}, semantic anomaly
+scoring~\eqref{eq:llm_score}, and five-way contextual threat
+classification~\eqref{eq:llm_classify} that serves two
+distinct roles: real-time contextual augmentation of the DRL
+state vector~\eqref{eq:llm_ctx} to resolve the congestion-vs-attack
+ambiguity, and offline forensic log interpretation with
+PQC-signed, blockchain-anchored incident
+reports~\eqref{eq:llm_report} for non-repudiable audit records.
+
+\end{enumerate}
+
+\subsection{Novelty}
+\begin{comment}
+...
+\end{comment}
+\begin{comment}
+The originality of the suggested work is based mostly on the formulation of the problem and the perspective of its defense rather than the specific techniques that are used in it. In contrast to the current literature which tackles the issue of control-plane timing attacks by either isolated detection or mitigation protocols \cite{Shoaib2023Detection, Kanimozhi2022DRL}, the research paper defines the problem as upholding timing integrity across a decentralized control, vehicular mobility, and rigid latency requirements.
+
+In addition, the suggested framework proposes an integrated cross-layer defense that collaboratively uses blockchain-based timing checking \cite{Mozumder2020Blockchain}, adaptive deep reinforcement learning-based control \cite{Kanimozhi2022DRL}, and contextual interpretation with the help of large language models \cite{Zhang2024LLM}. As far as the knowledge of the author is concerned, there is no previous work that has implemented these components into a cohesive Software-Defined Vehicular Network security system to protect against time-attack attacks.
+\end{comment}
+
+The novelty of this work lies in both the problem formulation and
+the solution design. On the problem side, this is the first work to
+formally quantify how vehicular mobility amplifies control-plane
+timing attacks across four distinct variants in SDVN, establishing
+mobility-induced amplification as a measurable, attack-specific
+threat metric. On the solution side, DMAP-SDVN is the first
+framework to unify rule-based attack-signature detection, mobility-
+aware DRL-based adaptive anomaly detection, dual-role smart-contract
+enforcement, NIST-standardised post-quantum cryptography (ML-DSA,
+threshold signatures, ZKP), IPFS-integrated real-time evidence
+anchoring, and LLM-based explainable forensics into a single
+dual-mode defence architecture specifically engineered for the
+mobility constraints, low-latency requirements, and quantum threat
+horizon of software-defined vehicular networks.
+
+\subsection{Significance}
+
+The implications of the findings of this study are significant to the theory and practice. Theoretically, the work builds upon the SDVN security work by highlighting timing integrity as a core security goal in dynamic and decentralized driving infrastructures. In practice, the suggested framework can be used to design insights about creating adaptive, low-latency defense mechanisms that are appropriate in safety-critical vehicular applications.
+
+Furthermore, explainable, LLM aided, threat interpretation integration points to novel trends of human-in-the-loop security management in smart transportation systems. The presented concepts apply as well to the protection of other time-sensitive SDN-based infrastructures like smart grids and industrial network of IoT.
